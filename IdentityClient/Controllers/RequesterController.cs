@@ -41,7 +41,7 @@ namespace IdentityClient.Controllers
             //
             var dataClient = _httpClientFactory.CreateClient();
             dataClient.SetBearerToken(tokenResponse.AccessToken);
-            var response = await dataClient.GetAsync(Config.RESOURCE_API_URL);
+            var response = await dataClient.GetAsync($"{Config.RESOURCE_API_URL}/list");
             if (response.IsSuccessStatusCode)
             {
                 responseBody = await response.Content.ReadAsStringAsync();

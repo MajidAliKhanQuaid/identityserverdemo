@@ -25,9 +25,15 @@ namespace ApiToBeSecured.Controllers
         }
 
         [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok("Api Working");
+        }
+
+        [HttpGet("list")]
         //[Authorize(AuthenticationSchemes = "Bearer")]
         [Authorize]
-        public IEnumerable<WeatherForecast> Get()
+        public IEnumerable<WeatherForecast> List()
         {
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast

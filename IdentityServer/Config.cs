@@ -1,4 +1,5 @@
 ﻿using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 using System;
 using System.Collections.Generic;
@@ -10,15 +11,17 @@ namespace IdentityServer
 {
     public static class Config
     {
+        // we've two types of resources : identity and api
         public static IEnumerable<IdentityResource> GetIdentityResources() =>
             new List<IdentityResource>
             {
+                // these are list of scopes in identity resources
+                // we need them in oidc authentication
                 new IdentityResources.OpenId(),
-                //new IdentityResources.Profile(),
-                //new IdentityResource("ApiToBeSecured", new List<string>{
-                //      JwtClaimTypes.BirthDate,
-                //      JwtClaimTypes.Email,
-                //}),
+                new IdentityResources.Profile(),
+                //new IdentityResources.Email(),
+                //new IdentityResources.Phone(),
+                //new IdentityResources.Address()
             };
 
         public static IEnumerable<ApiResource> GetApis()
@@ -48,12 +51,6 @@ namespace IdentityServer
                 new ApiScope(name: "Scope4",   displayName: "Scope # 4", claims),
                 new ApiScope(name: "ApiToBeSecured",   displayName: "ApiToBeSecured", claims)
 
-                // new ApiScope(name: "Scope1",   displayName: "Scope # 1"),
-                //new ApiScope(name: "Scope3",   displayName: "Scope # 3" ),
-                //new ApiScope(name: "Scope4",   displayName: "Scope # 4" ),
-                //new ApiScope(name: "Scope2",   displayName: "Scope # 2" ),
-                //new ApiScope(name: "ApiToBeSecured",   displayName: "ApiToBeSecured")
-
             };
         }
 
@@ -65,14 +62,28 @@ namespace IdentityServer
                 {
                     ClientId= "client-1",
                     ClientSecrets = {new Secret("secret-1".ToSha256()) },
-                    AllowedScopes  = {"Scope1", "Scope3", "ApiToBeSecured"},
+                    AllowedScopes  = {"Scope2", "Scope3", "ApiToBeSecured"},
                     //AllowedScopes  = {"ApiToBeSecured"},
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowedGrantTypes = GrantTypes.ClientCredentials
                     //Claims = new List<ClientClaim>()
                     //{
                     //    new ClientClaim(){Type = ClaimTypes.Email, Value = "user@gmail.com"},
                     //    new ClientClaim(){Type = ClaimTypes.DateOfBirth, Value = new DateTime(1994, 4,9).ToShortDateString()}
                     //}
+                },
+                new Client()
+                {
+                    ClientId= "client_razor",
+                    ClientSecrets = {new Secret("secret_razor".ToSha256()) },
+                    AllowedScopes  = {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        //IdentityServerConstants.StandardScopes.Email,
+                        //IdentityServerConstants.StandardScopes.Phone,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        //IdentityServerConstants.StandardScopes.Address,
+                    },
+                    RedirectUris = new[] { "https://localhost:44383/signin-oidc"},
+                    AllowedGrantTypes = GrantTypes.Code,
                 }
             };
         }
