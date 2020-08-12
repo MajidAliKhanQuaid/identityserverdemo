@@ -38,6 +38,7 @@ namespace IdentityServer
                 config.Password.RequireDigit = false;
                 config.Password.RequireNonAlphanumeric = false;
                 config.Password.RequireUppercase = false;
+                config.Password.RequireLowercase = false;
             })
                 .AddEntityFrameworkStores<AppIdentityContext>()
                 .AddDefaultTokenProviders();
@@ -45,10 +46,11 @@ namespace IdentityServer
             services.ConfigureApplicationCookie(config =>
             {
                 config.Cookie.Name = "IdentityServer.Cookie";
-                config.LoginPath = "/Auth/Login";
+                config.LoginPath = "/Login";
             });
 
             services.AddIdentityServer()
+                .AddAspNetIdentity<IdentityUser>()
                 .AddInMemoryApiResources(Config.GetApis())
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiScopes(Config.GetApiScopes()) // with out this -- you get scopes error

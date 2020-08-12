@@ -39,18 +39,13 @@ namespace IdentityServer
 
         public static IEnumerable<ApiScope> GetApiScopes()
         {
-            List<string> claims = new List<string>();
-            claims.Add("user@gmail.com");
-            claims.Add(new DateTime(1994, 4, 9).ToShortDateString());
-            //
             return new[]
             {
-                new ApiScope(name: "Scope1",   displayName: "Scope # 1", claims),
-                new ApiScope(name: "Scope2",   displayName: "Scope # 2", claims),
-                new ApiScope(name: "Scope3",   displayName: "Scope # 3", claims),
-                new ApiScope(name: "Scope4",   displayName: "Scope # 4", claims),
-                new ApiScope(name: "ApiToBeSecured",   displayName: "ApiToBeSecured", claims)
-
+                new ApiScope(name: "Scope1",   displayName: "Scope # 1"),
+                new ApiScope(name: "Scope2",   displayName: "Scope # 2"),
+                new ApiScope(name: "Scope3",   displayName: "Scope # 3"),
+                new ApiScope(name: "Scope4",   displayName: "Scope # 4"),
+                new ApiScope(name: "ApiToBeSecured",   displayName: "ApiToBeSecured")
             };
         }
 
@@ -84,6 +79,7 @@ namespace IdentityServer
                     },
                     RedirectUris = new[] { "https://localhost:44383/signin-oidc"},
                     AllowedGrantTypes = GrantTypes.Code,
+                    //RequireConsent = true
                 }
             };
         }

@@ -1,0 +1,33 @@
+﻿@page
+@model IdentityServer.Pages.LogInModel
+@{
+    ViewData["Title"] = "LogIn";
+}
+
+<h1>Log In - User</h1>
+
+<style>
+    span{
+        display: block;
+        color: red;
+    }
+</style>
+
+<div>
+    <form method="post">
+        <input type="hidden" asp-for="ReturnUrl" />
+        <div>
+            <input asp-for="Username" type="text" placeholder="email" />
+            <span style="display: block; color: red;" asp-validation-for="Username"></span>
+        </div>
+        <div>
+            <input asp-for="Password" type="password" placeholder="password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <button type="submit">Log In</button>
+    </form>
+</div>
+
+<div>
+    <span>Already have an account <a asp-page="/Register" asp-route-returnUrl="@(Model.ReturnUrl)">Register</a></span>
+</div>

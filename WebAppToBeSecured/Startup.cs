@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,20 +28,20 @@ namespace WebAppToBeSecured
         {
             services.AddRazorPages(config =>
             {
-                config.Conventions.AuthorizePage("/Privacy");
+                config.Conventions.AuthorizePage("/ProtectedPage");
             });
             services.AddAuthentication(config =>
             {
-                config.DefaultScheme = "Cookie";
-                config.DefaultChallengeScheme = "oidc";
+                config.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                config.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
-                .AddCookie("Cookie")
-                .AddOpenIdConnect("oidc", config =>
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, config =>
                 {
                     config.Authority = Config.IDENTITY_SERVER_URL;
                     config.ClientId = "client_razor";
                     config.ClientSecret = "secret_razor";
-                    config.SaveTokens = true;
+                    //config.SaveTokens = true;
                     config.ResponseType = "code";
                 });
         }
