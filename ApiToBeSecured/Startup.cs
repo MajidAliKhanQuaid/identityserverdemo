@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 
 namespace ApiToBeSecured
 {
@@ -42,11 +43,14 @@ namespace ApiToBeSecured
                     //};
                 });
 
-            //services.AddCors(confg =>
-            //    confg.AddPolicy("AllowAll",
-            //        p => p.AllowAnyOrigin()
-            //            .AllowAnyMethod()
-            //            .AllowAnyHeader()));
+            services.AddCors(confg =>
+                confg.AddPolicy("AllowAll",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .WithHeaders(HeaderNames.ContentType)
+                        .WithMethods("PUT", "POST", "GET")
+                        )
+                );
 
         }
 
@@ -58,9 +62,9 @@ namespace ApiToBeSecured
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
-            //app.UseCors("AllowAll");
+            app.UseCors("AllowAll");
 
             app.UseRouting();
 

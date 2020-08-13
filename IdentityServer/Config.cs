@@ -19,6 +19,7 @@ namespace IdentityServer
                 // we need them in oidc authentication
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResources.Email(),
                 new IdentityResource
                 {
                     Name = "is.FatherName",
@@ -81,13 +82,33 @@ namespace IdentityServer
                         //IdentityServerConstants.StandardScopes.Phone,
                         IdentityServerConstants.StandardScopes.Profile,
                         //IdentityServerConstants.StandardScopes.Address,
-                        "is.FatherName"
+                        "is.FatherName",
                     },
                     RedirectUris = new[] { "https://localhost:44383/signin-oidc"},
                     AllowedGrantTypes = GrantTypes.Code,
                     // adding claims in id token
                     AlwaysIncludeUserClaimsInIdToken = false,
                     //RequireConsent = true
+                },
+                new Client {
+                    ClientId = "client_angular",
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    RequireClientSecret = false,
+                    RedirectUris = { "http://localhost:4200" },
+                    PostLogoutRedirectUris = { "http://localhost:4200" },
+                    AllowedCorsOrigins = { "http://localhost:4200" },
+
+                    AllowedScopes = {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Email,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "ApiToBeSecured"
+                    },
+
+                    AllowAccessTokensViaBrowser = true,
+                    RequireConsent = false,
                 }
             };
         }

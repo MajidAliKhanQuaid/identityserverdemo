@@ -11,6 +11,26 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityClient", "IdentityC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAppToBeSecured", "WebAppToBeSecured\WebAppToBeSecured.csproj", "{1D30928C-9EDC-4427-8611-03FA9F0CFB67}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ecode-shop-angular", "ecode-shop-angular\", "{37E0BBF5-7871-40B2-8AC2-C05FD2518B1D}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_61448"
+		Debug.AspNetCompiler.PhysicalPath = "ecode-shop-angular\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_61448\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_61448"
+		Release.AspNetCompiler.PhysicalPath = "ecode-shop-angular\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_61448\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "61448"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +53,10 @@ Global
 		{1D30928C-9EDC-4427-8611-03FA9F0CFB67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D30928C-9EDC-4427-8611-03FA9F0CFB67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D30928C-9EDC-4427-8611-03FA9F0CFB67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37E0BBF5-7871-40B2-8AC2-C05FD2518B1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37E0BBF5-7871-40B2-8AC2-C05FD2518B1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37E0BBF5-7871-40B2-8AC2-C05FD2518B1D}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{37E0BBF5-7871-40B2-8AC2-C05FD2518B1D}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

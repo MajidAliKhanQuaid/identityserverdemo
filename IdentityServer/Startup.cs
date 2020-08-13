@@ -47,6 +47,8 @@ namespace IdentityServer
             {
                 config.Cookie.Name = "IdentityServer.Cookie";
                 config.LoginPath = "/Login";
+                config.LogoutPath = "/Logout";
+                config.AccessDeniedPath = "/AccessDenied";
             });
 
             services.AddIdentityServer()
@@ -66,6 +68,12 @@ namespace IdentityServer
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                // default identityserver using http + chrome, doesn't work. 
+                // Chrome enforces that cookies with SameSite=none have also Secure attribute, so you may have to either use HTTPS, or modify the cookie policy
+                app.UseCookiePolicy(new CookiePolicyOptions()
+                {
+                    MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Lax
+                });
             }
 
             app.UseRouting();
