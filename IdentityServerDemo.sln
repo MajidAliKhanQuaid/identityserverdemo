@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{62445F77-E311-4035-9CC0-4AD01F1DECC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiToBeSecured", "ApiToBeSecured\ApiToBeSecured.csproj", "{582989EE-60E4-49D5-9A2C-21722BF71B5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiToBeSecured", "ApiToBeSecured\ApiToBeSecured.csproj", "{582989EE-60E4-49D5-9A2C-21722BF71B5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityClient", "IdentityClient\IdentityClient.csproj", "{3528430E-3C5F-4D3E-9A04-CD5C10847851}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityClient", "IdentityClient\IdentityClient.csproj", "{3528430E-3C5F-4D3E-9A04-CD5C10847851}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppToBeSecured", "WebAppToBeSecured\WebAppToBeSecured.csproj", "{1D30928C-9EDC-4427-8611-03FA9F0CFB67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAppToBeSecured", "WebAppToBeSecured\WebAppToBeSecured.csproj", "{1D30928C-9EDC-4427-8611-03FA9F0CFB67}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

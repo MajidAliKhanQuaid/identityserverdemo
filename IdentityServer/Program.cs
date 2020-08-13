@@ -22,6 +22,7 @@ namespace IdentityServer
                 var service = scope.ServiceProvider.GetService<UserManager<IdentityUser>>();
                 var user = new IdentityUser("john");
                 var result = service.CreateAsync(user, "password").GetAwaiter().GetResult();
+                service.AddClaimAsync(user, new System.Security.Claims.Claim("claim.FatherName", "Quaid Khan"));
                 if (result.Succeeded)
                 {
 

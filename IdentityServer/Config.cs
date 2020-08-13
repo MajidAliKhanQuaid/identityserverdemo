@@ -19,6 +19,11 @@ namespace IdentityServer
                 // we need them in oidc authentication
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResource
+                {
+                    Name = "is.FatherName",
+                    UserClaims = new []{ "claim.FatherName" }
+                }
                 //new IdentityResources.Email(),
                 //new IdentityResources.Phone(),
                 //new IdentityResources.Address()
@@ -76,9 +81,12 @@ namespace IdentityServer
                         //IdentityServerConstants.StandardScopes.Phone,
                         IdentityServerConstants.StandardScopes.Profile,
                         //IdentityServerConstants.StandardScopes.Address,
+                        "is.FatherName"
                     },
                     RedirectUris = new[] { "https://localhost:44383/signin-oidc"},
                     AllowedGrantTypes = GrantTypes.Code,
+                    // adding claims in id token
+                    AlwaysIncludeUserClaimsInIdToken = false,
                     //RequireConsent = true
                 }
             };
