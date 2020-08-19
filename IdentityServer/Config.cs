@@ -99,11 +99,12 @@ namespace IdentityServer
                     RedirectUris = { "http://localhost:4200" },
                     PostLogoutRedirectUris = { "http://localhost:4200" },
                     AllowedCorsOrigins = { "http://localhost:4200" },
-
+                    AllowOfflineAccess = true,
                     AllowedScopes = {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Email,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
                         "ApiToBeSecured"
                     },
 
