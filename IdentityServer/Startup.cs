@@ -10,7 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using IdentityServer.Data;
+using IdentityServer.Identity;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace IdentityServer
 {
@@ -29,8 +30,8 @@ namespace IdentityServer
             string conStr = _configuration.GetConnectionString("Default");
             services.AddDbContext<AppIdentityContext>(config =>
             {
-                //config.UseSqlServer(conStr);
-                config.UseInMemoryDatabase("IdentityDb");
+                config.UseSqlServer(_configuration.GetConnectionString("Default"));
+                //config.UseInMemoryDatabase("Default");
             });
             services.AddIdentity<IdentityUser, IdentityRole>(config =>
             {
@@ -59,14 +60,27 @@ namespace IdentityServer
                 .AddInMemoryClients(Config.GetClients())
                 .AddDeveloperSigningCredential();
 
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy(nameof(Constants.AdministratorRole), policy => policy.RequireClaim(JwtRegisteredClaimNames.Nonce, Constants.AdministratorRole));
+            //});
+
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy(nameof(Constants.SimpleUser), policy => policy.RequireClaim(JwtRegisteredClaimNames.Nonce, Constants.SimpleUser));
+            //});
+
             services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
+                // seeding the database
+                AppIdentityContextSeed.SeedData(userManager, roleManager);
+
                 app.UseDeveloperExceptionPage();
                 // default identityserver using http + chrome, doesn't work. 
                 // Chrome enforces that cookies with SameSite=none have also Secure attribute, so you may have to either use HTTPS, or modify the cookie policy

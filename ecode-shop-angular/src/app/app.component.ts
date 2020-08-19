@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
   
   callApi(){
     const token = this.oidcSecurityService.getToken();
-      this.http.get("http://localhost:52717/product/all")
+      this.http.get("http://localhost:52717/api/products")
       .subscribe((data: any) => console.log(data));
   }
 }

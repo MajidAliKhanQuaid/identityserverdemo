@@ -4,12 +4,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiTBS_MediatR.Pipes;
+using ApiToBeSecured.Data;
+using ApiToBeSecured.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -39,6 +42,11 @@ namespace ApiToBeSecured
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(UserIdPipe<,>));
             services.AddMediatR(typeof(ApiTBS_MediatR.ApiTBS_MediatR).Assembly);
 
+            services.AddDbContext<ECommDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("Default"));
+            });
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, config =>
                 {
@@ -52,6 +60,12 @@ namespace ApiToBeSecured
                     //    ValidateAudience = false
                     //};
                 });
+
+
+            services.AddTransient<ITagService, TagService>();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IProductTagService, ProductTagService>();
+            services.AddTransient<IShipmentService, ShipmentService>();
 
             services.AddCors(confg =>
                 confg.AddPolicy("AllowAll",

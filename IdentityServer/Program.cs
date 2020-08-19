@@ -16,22 +16,22 @@ namespace IdentityServer
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            using (var scope = host.Services.CreateScope())
-            {
-                //var userManager = (UserManager<ApplicationUser>)scope.ServiceProvider.GetService(typeof(UserManager<ApplicationUser>));
-                var service = scope.ServiceProvider.GetService<UserManager<IdentityUser>>();
-                var user = new IdentityUser("john");
-                var result = service.CreateAsync(user, "password").GetAwaiter().GetResult();
-                service.AddClaimAsync(user, new System.Security.Claims.Claim("claim.FatherName", "Quaid Khan"));
-                if (result.Succeeded)
-                {
+            //using (var scope = host.Services.CreateScope())
+            //{
+            //    //var userManager = (UserManager<ApplicationUser>)scope.ServiceProvider.GetService(typeof(UserManager<ApplicationUser>));
+            //    var service = scope.ServiceProvider.GetService<UserManager<IdentityUser>>();
+            //    var user = new IdentityUser("john");
+            //    var result = service.CreateAsync(user, "password").GetAwaiter().GetResult();
+            //    service.AddClaimAsync(user, new System.Security.Claims.Claim("claim.FatherName", "Quaid Khan"));
+            //    if (result.Succeeded)
+            //    {
 
-                }
-                else
-                {
+            //    }
+            //    else
+            //    {
                     
-                }
-            }
+            //    }
+            //}
             host.Run();
         }
 
