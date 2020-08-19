@@ -11,10 +11,25 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 
 export class AppComponent implements OnInit {
+  isAuthenticated: boolean;
   constructor(public oidcSecurityService: OidcSecurityService, private http: HttpClient) {}
   
   ngOnInit() {
-    this.oidcSecurityService.checkAuth().subscribe((auth) => console.log('is authenticated', auth));
+    this.oidcSecurityService.checkAuth().subscribe((auth) => {
+      if(!auth){
+        this.isAuthenticated = false;
+        console.warn("ngOnInit | User Authenticated ", auth);
+        this.login();
+      }
+      else{
+        this.isAuthenticated = true;
+        //
+        const token = this.oidcSecurityService.getToken();
+        console.warn("login | Token || ", token);
+        const refreshToken = this.oidcSecurityService.getRefreshToken();
+        console.warn("login | Refresh Token || ", refreshToken);
+      }
+    });
   }
   
   login() {
@@ -22,18 +37,14 @@ export class AppComponent implements OnInit {
   }
   
   logout() {
-    this.oidcSecurityService.logoff();
+      console.log("Logout");
+      this.oidcSecurityService.logoff();
+      localStorage.removeItem("ACCESS_TOKEN");
   }
   
   callApi(){
     const token = this.oidcSecurityService.getToken();
-    console.log("Calling the Api : ", token);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + token,
-      }),
-    };
-    this.http.get("http://localhost:52717/WeatherForecast/list", httpOptions)
-    .subscribe((data: any) => console.log(data));
+      this.http.get("http://localhost:52717/product/all")
+      .subscribe((data: any) => console.log(data));
   }
 }

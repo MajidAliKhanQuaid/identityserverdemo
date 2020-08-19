@@ -1,3 +1,4 @@
+import { TokenInterceptor } from './src/app/_interceptors/token.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -25,10 +26,10 @@ export function configureAuth(oidcConfigService: OidcConfigService) {
           redirectUrl: window.location.origin,
           postLogoutRedirectUri: window.location.origin,
           clientId: 'client_angular',
-          scope: 'openid profile ApiToBeSecured email',
+          scope: 'openid profile ApiToBeSecured email offline_access',
           responseType: 'code',
-          silentRenew: false,
-          silentRenewUrl: `${window.location.origin}/silent-renew.html`,
+          silentRenew: true,
+          useRefreshToken: true,
           logLevel: LogLevel.Debug,
       });
 }
@@ -59,6 +60,11 @@ export function configureAuth(oidcConfigService: OidcConfigService) {
         useFactory: configureAuth,
         deps: [OidcConfigService],
         multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
     }
   ],
   bootstrap: [AppComponent],

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiTBS_MediatR.Pipes;
@@ -30,12 +31,14 @@ namespace ApiToBeSecured
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddControllers();
+
             // allows you to access http context
             services.AddHttpContextAccessor();
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(UserIdPipe<,>));
             services.AddMediatR(typeof(ApiTBS_MediatR.ApiTBS_MediatR).Assembly);
 
-            services.AddControllers();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, config =>
                 {
@@ -81,11 +84,12 @@ namespace ApiToBeSecured
             //    // Call the next delegate/middleware in the pipeline
             //    await next();
             //});
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers().RequireAuthorization();
             });
         }
     }
