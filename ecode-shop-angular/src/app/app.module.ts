@@ -1,5 +1,7 @@
+import { ProductComponent } from './src/app/_forms/product/product.component';
 import { TokenInterceptor } from './src/app/_interceptors/token.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule} from '@angular/common';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -7,17 +9,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatPaginatorModule } from '@angular/material/paginator';
-
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AuthModule, LogLevel, OidcConfigService } from 'angular-auth-oidc-client';
+import { ProductBoxComponent } from './src/app/_components/product-box/product-box.component';
+import { TopbarComponent } from './src/app/_components/topbar/topbar.component';
+import { DefaultComponent } from './src/app/_components/default/default.component';
+import { ProductListComponent } from './src/app/_pages/product-list/product-list.component';
+import { TagsListComponent } from './src/app/_pages/tags-list/tags-list.component';
+import { ImagesListComponent } from './src/app/_pages/images-list/images-list.component';
+import { SalesListComponent } from './src/app/_pages/sales-list/sales-list.component';
+import { TagComponent } from './src/app/_forms/tag/tag.component';
 
 export function configureAuth(oidcConfigService: OidcConfigService) {
   return () =>
@@ -30,28 +32,22 @@ export function configureAuth(oidcConfigService: OidcConfigService) {
           responseType: 'code',
           silentRenew: true,
           useRefreshToken: true,
-          logLevel: LogLevel.Debug,
+          logLevel: LogLevel.Error | LogLevel.Warn,
       });
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ProductBoxComponent, ProductComponent, TopbarComponent, DefaultComponent, ProductListComponent, TagsListComponent, ImagesListComponent, SalesListComponent, TagComponent],
   imports: [
     BrowserModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatPaginatorModule,
-    AuthModule.forRoot(),
+    AuthModule.forRoot()
   ],
   providers: [
     OidcConfigService,

@@ -1,0 +1,9 @@
+<h1>Product List</h1>
+<div>
+    <a [routerLink]="['/add-product']">Add Product</a> 
+</div>
+<div class="products-container">
+    <div *ngFor="let product of products">
+        <app-product-box [product]="product"></app-product-box>
+    </div>
+</div>

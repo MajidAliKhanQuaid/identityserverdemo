@@ -1,0 +1,13 @@
+<form  [formGroup]="tagForm" (ngSubmit)="saveTag()">
+    <div>
+        <label for="TagName">Tag Name</label>
+        <input type="text" name="TagName" [formControl]="TagName">
+    </div>
+    <div>
+        <label for="TagDescription">Tag Description</label>
+        <input type="text" [formControl]="TagDescription">
+    </div>
+    <div>
+        <button type="submit">Save Tag</button>
+    </div>
+</form>

@@ -6,7 +6,7 @@ export const environment = {
   production: false,
 };
 
-export const API_URL: string = 'https://localhost:44396/api'; //44396';
+export const API_URL: string = 'http://localhost:52717/api'; //44396';
 
 export const ACCESS_TOKEN: string = '';
 export const REFRESH_TOKEN: string = '';

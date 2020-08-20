@@ -93,6 +93,8 @@ namespace ApiToBeSecured
             app.UseRouting();
 
             app.UseAuthentication();
+
+            app.UseStaticFiles();
             //app.Use(async (context, next) =>
             //{
             //    // Call the next delegate/middleware in the pipeline

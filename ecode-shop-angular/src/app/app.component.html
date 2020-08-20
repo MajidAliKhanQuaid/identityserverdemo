@@ -1,6 +1,12 @@
-<!-- <router-outlet></router-outlet> -->
-<button (click)="login()">Log In</button>
-<button (click)="callApi()">Call Api</button>
-<button (click)="logout()">Log Out</button>
-
-<div [hidden]="!isAuthenticated">You are authenticated</div>
+<app-topbar></app-topbar>
+<div>
+    <!-- <router-outlet></router-outlet> -->
+    <button (click)="login()">Log In</button>
+    <button (click)="callApi()">Call Api</button>
+    <button (click)="logout()">Log Out</button>
+    
+    <div [hidden]="!isAuthenticated">You are authenticated</div>
+</div>
+<div class="container">
+    <router-outlet></router-outlet>
+</div>

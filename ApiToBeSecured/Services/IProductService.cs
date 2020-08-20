@@ -11,7 +11,8 @@ namespace ApiToBeSecured.Services
         Task<IEnumerable<Product>> GetAllProduct();
         Task<Product> GetProductById(Guid id);
         Task<string> AddProduct(ProductDto tag);
-        Task<string> EditProductById(Guid id, int stock);
+        Task<string> EditProductStockById(Guid id, int stock);
+        Task<string> EditProductById(Guid id, ProductDto productDto);
         Task<bool> DeleteProductById(Guid id);
     }
 }

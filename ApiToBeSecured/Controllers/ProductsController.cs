@@ -22,32 +22,32 @@ namespace ApiToBeSecured.Controllers
         public async Task<IActionResult> Get()
         {
             var isSuccessResult = await _productService.GetAllProduct();
-            if(isSuccessResult == null) return BadRequest();
+            if (isSuccessResult == null) return BadRequest();
             return Json(isSuccessResult);
         }
-        
+
         [HttpGet("{id}", Name = "ProductGet")]
         public async Task<IActionResult> Get(Guid id)
         {
             var isSuccessResult = await _productService.GetProductById(id);
-            if(isSuccessResult == null) return BadRequest();
+            if (isSuccessResult == null) return BadRequest();
             return Json(isSuccessResult);
         }
 
         // [Authorize(Policy = nameof(Constants.AdministratorRole))]
         [HttpPost]
-        public async Task<IActionResult> Post([FromForm]ProductDto model)
+        public async Task<IActionResult> Post([FromForm] ProductDto model)
         {
             var isSuccessResult = await _productService.AddProduct(model);
 
             //check if returned result is guid or not
             //if guid it was successfull. Otherwise unsuccessfull
             Guid GuidOutput;
-            bool isGuid = Guid.TryParse(isSuccessResult,out GuidOutput);
+            bool isGuid = Guid.TryParse(isSuccessResult, out GuidOutput);
 
-            if(!isGuid)
+            if (!isGuid)
                 return BadRequest(isSuccessResult);
-            else 
+            else
             {
                 //var NewUri = Url.Link("ProductGet",new{id = new Guid(isSuccessResult)});
                 //return Created(NewUri,model);
@@ -55,14 +55,24 @@ namespace ApiToBeSecured.Controllers
             }
         }
 
-        [HttpPut("{id}/{stock}")]
-        public async Task<IActionResult> Put(Guid id , int stock)
-        {
-            var isSuccessResult = await _productService.EditProductById(id,stock);
 
-            if(isSuccessResult == "Unsucessfull")
+        [HttpPost("update", Name = "ProductUpdate")]
+        public async Task<IActionResult> Update(Guid id, [FromForm] ProductDto model)
+        {
+            var isSuccessResult = await _productService.GetProductById(id);
+            if (isSuccessResult == null || model == null) return BadRequest();
+            var result = _productService.EditProductById(id, model);
+            return Ok(new { result });
+        }
+
+        [HttpPut("{id}/{stock}")]
+        public async Task<IActionResult> Put(Guid id, int stock)
+        {
+            var isSuccessResult = await _productService.EditProductStockById(id, stock);
+
+            if (isSuccessResult == "Unsucessfull")
                 return BadRequest();
-            else 
+            else
             {
                 return Ok();
             }
@@ -74,9 +84,9 @@ namespace ApiToBeSecured.Controllers
         {
             var isSuccessResult = await _productService.DeleteProductById(id);
 
-            if(!isSuccessResult)
+            if (!isSuccessResult)
                 return BadRequest();
-            else 
+            else
             {
                 return Ok();
             }

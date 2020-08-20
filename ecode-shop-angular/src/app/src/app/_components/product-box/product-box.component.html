@@ -1,0 +1,12 @@
+<div class="product-container">
+    <div class="p-image">
+        <img [src]="product.Image && product.Image.length > 0 ? product.Image[0] : './assets/images/loading.gif'">
+    </div>
+    <div class="p-title">
+        {{ product.productName }}
+    </div>
+    <div class="p-btns">
+        <button (click)="addToCart($event)">Add To Cart</button>
+        <button (click)="edit($event)">Edit</button>
+    </div>
+</div>

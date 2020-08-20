@@ -7,6 +7,12 @@ namespace ApiToBeSecured.ViewModels
 {
     public class ProductDto
     {
+        public ProductDto()
+        {
+            Image = new List<IFormFile>();
+            Tags = new List<Guid>();
+        }
+
         [Required]
         [MaxLength(50)]
         public string ProductCode { get; set; }

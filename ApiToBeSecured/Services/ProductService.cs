@@ -20,14 +20,14 @@ namespace ApiToBeSecured.Services
 
         public async Task<IEnumerable<Product>> GetAllProduct()
         {
-            return await _context.Products.Include(pro => pro.Tags).Include( pro => pro.Image).ToArrayAsync();
+            return await _context.Products.Include(pro => pro.Tags).Include(pro => pro.Image).ToArrayAsync();
         }
 
         public async Task<Product> GetProductById(Guid id)
         {
-            return await _context.Products.Include(pro => pro.Tags).Include( pro => pro.Image).Where(m=> m.Id == id).SingleAsync();
+            return await _context.Products.Include(pro => pro.Tags).Include(pro => pro.Image).Where(m => m.Id == id).SingleAsync();
         }
-        
+
         public async Task<bool> DeleteProduct(Guid id)
         {
             _context.Products.Remove(await _context.Products.FindAsync(id));
@@ -39,7 +39,7 @@ namespace ApiToBeSecured.Services
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
             var message = "";
 
-             var entity = new Product
+            var entity = new Product
             {
                 Id = new Guid(),
                 ProductCode = product.ProductCode,
@@ -49,23 +49,23 @@ namespace ApiToBeSecured.Services
                 Stock = product.Stock
             };
 
-             _context.Products.Add(entity);
+            _context.Products.Add(entity);
 
             foreach (var img in product.Image)
             {
                 var extention = Path.GetExtension(img.FileName);
-                if(allowedExtensions.Contains(extention.ToLower()) || img.Length > 2000000)
+                if (allowedExtensions.Contains(extention.ToLower()) || img.Length > 2000000)
                     message = "Select jpg or jpeg or png less than 2Μ";
-                var fileName = Path.Combine("Products",DateTime.Now.Ticks+extention);
-                var path = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot",fileName);
-               
-                try{
-                    using(var stream = new FileStream(path,FileMode.Create))
+                var fileName = Path.Combine("Products", DateTime.Now.Ticks + extention);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName);
+
+                try {
+                    using (var stream = new FileStream(path, FileMode.Create))
                     {
                         await img.CopyToAsync(stream);
                     }
                 }
-                catch{
+                catch {
                     return "can not upload image";
                 }
 
@@ -89,16 +89,11 @@ namespace ApiToBeSecured.Services
                 _context.ProductTags.Add(tagEntity);
             }
 
-             bool success = await _context.SaveChangesAsync() == 1+product.Image.Count+product.Tags.Count;
+            bool success = await _context.SaveChangesAsync() == 1 + product.Image.Count + product.Tags.Count;
 
-            if(success) return entity.Id.ToString();
+            if (success) return entity.Id.ToString();
             else return message;
-           
-        }
 
-        public Task<string> EditProductById(Guid id, ProductDto tag)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<bool> DeleteProductById(Guid id)
@@ -107,17 +102,38 @@ namespace ApiToBeSecured.Services
             return 1 == await _context.SaveChangesAsync();
         }
 
-        public async Task<string> EditProductById(Guid id, int stock)
+        public async Task<string> EditProductStockById(Guid id, int stock)
         {
             var entity = await _context.Products.FindAsync(id);
-            
-            if(entity.Stock-stock >= 0)
-                entity.Stock = entity.Stock-stock;
+
+            if (entity.Stock - stock >= 0)
+                entity.Stock = entity.Stock - stock;
             else return "Unsucessfull";
 
             bool success = await _context.SaveChangesAsync() == 1;
-            if(success) return entity.Id.ToString();
-            else return "Unsucessfull" ;
+            if (success) return entity.Id.ToString();
+            else return "Unsucessfull";
         }
+
+
+        public async Task<string> EditProductById(Guid id, ProductDto productDto)
+        {
+            var entity = await this.GetProductById(id);
+            entity.ProductName = productDto.ProductName;
+            entity.Description = productDto.Description;
+            entity.ProductCode = productDto.ProductCode;
+            entity.Stock = productDto.Stock;
+            //entity.Image = productDto.Image;
+            //entity.Tags = productDto.Tags;
+            //if (entity.Stock - stock >= 0)
+            //    entity.Stock = entity.Stock - stock;
+            //else return "Unsucessfull";
+
+            bool success = await _context.SaveChangesAsync() == 1;
+            if (success) return entity.Id.ToString();
+            else return "Unsucessfull";
+        }
+
+
     }
 }

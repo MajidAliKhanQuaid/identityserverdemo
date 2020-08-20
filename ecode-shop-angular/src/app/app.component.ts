@@ -1,6 +1,7 @@
+import { ProductService } from './src/app/_services/product.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OidcClientNotification, OidcSecurityService, PublicConfiguration } from 'angular-auth-oidc-client';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 @Component({
@@ -10,12 +11,17 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 })
 
 
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+  product: any;
+  subscription1: Subscription;
+  subscription2: Subscription;
   isAuthenticated: boolean;
-  constructor(public oidcSecurityService: OidcSecurityService, private http: HttpClient) {}
+  products: any[];
+  constructor(public oidcSecurityService: OidcSecurityService, private productService: ProductService) {}
   
   ngOnInit() {
-    this.oidcSecurityService.checkAuth().subscribe((auth) => {
+    this.product = {imageUrl : 'https://via.placeholder.com/150', title: 'first image'}
+    this.subscription1 = this.oidcSecurityService.checkAuth().subscribe((auth) => {
       if(!auth){
         this.isAuthenticated = false;
         console.warn("ngOnInit | User Authenticated ", auth);
@@ -31,6 +37,12 @@ export class AppComponent implements OnInit {
       }
     });
   }
+
+
+  ngOnDestroy(){
+    this.subscription1.unsubscribe();
+    this.subscription2.unsubscribe();
+  }
   
   login() {
     this.oidcSecurityService.authorize();
@@ -43,8 +55,9 @@ export class AppComponent implements OnInit {
   }
   
   callApi(){
-    const token = this.oidcSecurityService.getToken();
-      this.http.get("http://localhost:52717/api/products")
-      .subscribe((data: any) => console.log(data));
+    this.subscription2= this.productService.getProducts().subscribe(products => {
+      this.products = products;
+      console.log(this.products);
+    })
   }
 }
