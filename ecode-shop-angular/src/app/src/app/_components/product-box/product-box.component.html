@@ -1,6 +1,6 @@
 <div class="product-container">
     <div class="p-image">
-        <img [src]="product.Image && product.Image.length > 0 ? product.Image[0] : './assets/images/loading.gif'">
+        <img [src]="product.image && product.image.length > 0 ? product.image[0].path : './assets/images/loading.gif'">
     </div>
     <div class="p-title">
         {{ product.productName }}

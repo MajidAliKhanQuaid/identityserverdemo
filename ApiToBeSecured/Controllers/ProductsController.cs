@@ -6,6 +6,10 @@ using ApiToBeSecured.Services;
 using ApiToBeSecured.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Cors.Infrastructure;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace ApiToBeSecured.Controllers
 {
@@ -23,6 +27,9 @@ namespace ApiToBeSecured.Controllers
         {
             var isSuccessResult = await _productService.GetAllProduct();
             if (isSuccessResult == null) return BadRequest();
+            // this method is written to avoid api remembing the host of the api
+            IncludeHostUrl(isSuccessResult);
+            //
             return Json(isSuccessResult);
         }
 
@@ -91,5 +98,24 @@ namespace ApiToBeSecured.Controllers
                 return Ok();
             }
         }
+
+        private void IncludeHostUrl(IEnumerable<Product> products)
+        {
+            Uri baseUri = new Uri(Request.Scheme + "://" + Request.Host.Value);
+            //
+            foreach (var product in products)
+            {
+                if (product.Image != null && product.Image.Count > 0)
+                {
+                    foreach (var image in product.Image)
+                    {
+                        Uri imageUri = new Uri(baseUri, image.Path);
+                        //
+                        image.Path = imageUri.ToString();
+                    }
+                }
+            }
+        }
+
     }
 }

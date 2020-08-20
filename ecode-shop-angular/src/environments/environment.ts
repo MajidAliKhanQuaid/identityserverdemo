@@ -6,7 +6,8 @@ export const environment = {
   production: false,
 };
 
-export const API_URL: string = 'http://localhost:52717/api'; //44396';
+export const API_BASE_URL: string = 'http://localhost:52717';
+export const API_URL: string = `${API_BASE_URL}/api`; //44396';
 
 export const ACCESS_TOKEN: string = '';
 export const REFRESH_TOKEN: string = '';
