@@ -9,9 +9,10 @@ namespace ApiToBeSecured.ViewModels
     {
         public ProductDto()
         {
-            Image = new List<IFormFile>();
             Tags = new List<Guid>();
         }
+
+        public string Id { get; set; }
 
         [Required]
         [MaxLength(50)]
@@ -34,7 +35,8 @@ namespace ApiToBeSecured.ViewModels
         public int Stock { get; set; }
 
         [Required]
-        public List<IFormFile> Image { get; set; }
+        //public List<IFormFile> Image { get; set; }
+        public IFormCollection Image { get; set; }
 
         [Required]
         public List<Guid> Tags { get; set; }

@@ -1,11 +1,11 @@
 <form [formGroup]="productForm" (ngSubmit)="submitForm()">
-    <div *ngIf="errorMessage">
-        {{ errorMessage }}
-    </div>
+    <h1>{{ productId }}</h1>
     <!-- <input type="hidden" name="Id" [formControl]="Id"> -->
+    <input type="hidden" name="Id" [formControl]="Id">
     <div class="fg">
         <label for="ProductCode">ProductCode</label>
         <input type="text" name="ProductCode" [formControl]="ProductCode">
+        <div class="validations" *ngIf="ProductCode.touched  && ProductCode.errors && ProductCode.errors.required">ProductCode is required</div>
         <div class="validations" *ngIf="ProductCode.touched  && ProductCode.errors && ProductCode.errors.required">ProductCode is required</div>
     </div>
     <div class="fg">
@@ -21,11 +21,13 @@
     <div class="fg">
         <label for="Price">Price</label>
         <input type="text" name="Price" [formControl]="Price">
+        <div class="validations" *ngIf="Price.touched  && Price.errors && Price.errors.pattern">Only numbers allowed</div>
         <div class="validations" *ngIf="Price.touched  && Price.errors && Price.errors.required">Price is required</div>
     </div>
     <div class="fg">
         <label for="Stock">Stock</label>
         <input type="text" name="Stock" [formControl]="Stock">
+        <div class="validations" *ngIf="Stock.touched && Stock.errors && Stock.errors.pattern">Only numbers allowed</div>
         <div class="validations" *ngIf="Stock.touched && Stock.errors && Stock.errors.required">Stock is required</div>
     </div>
     <h5>Images</h5>

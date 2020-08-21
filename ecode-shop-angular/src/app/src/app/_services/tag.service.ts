@@ -16,6 +16,11 @@ export class TagService {
     .pipe(map(x => <[]>x), catchError(err => []))
   }
 
+  getTagById = (_id) : Observable<any> => {
+    return this.http.get(`${API_URL}/tags/${_id}`)
+    .pipe(map(x => x), catchError(err => null))
+  }
+
   saveTag (objTag) {
     return this.http.post(`${API_URL}/tags`, objTag);
   }

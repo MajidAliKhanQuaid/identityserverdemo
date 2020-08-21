@@ -7,6 +7,6 @@
     </div>
     <div class="p-btns">
         <button (click)="addToCart($event)">Add To Cart</button>
-        <button (click)="edit($event)">Edit</button>
+        <a [routerLink]="['/routePath']" routerLinkActive="router-link-active" [queryParams]="{prop: 'xxx'}"></a>
     </div>
 </div>

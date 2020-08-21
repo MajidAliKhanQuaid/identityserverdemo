@@ -37,14 +37,30 @@ namespace ApiToBeSecured.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]TagDto model)
         {
-            var isSuccessResult = await _tagService.AddTag(model);
-
-            if(isSuccessResult == "Unsucessfull")
-                return BadRequest();
-            else 
+            // if there's no id, then add new
+            if(model.Id == Guid.Empty)
             {
-                var NewUri = Url.Link("TagGet",new{id = new Guid(isSuccessResult)});
-                return Created(NewUri,model);
+                var isSuccessResult = await _tagService.AddTag(model);
+
+                if (isSuccessResult == "Unsucessfull")
+                    return BadRequest();
+                else
+                {
+                    var NewUri = Url.Link("TagGet", new { id = new Guid(isSuccessResult) });
+                    return Created(NewUri, model);
+                }
+            }
+            else
+            {
+                var isSuccessResult = await _tagService.EditTagById(model.Id, model);
+
+                if (isSuccessResult == "Unsucessfull")
+                    return BadRequest();
+                else
+                {
+                    var NewUri = Url.Link("TagGet", new { id = new Guid(isSuccessResult) });
+                    return Created(NewUri, model);
+                }
             }
         }
 

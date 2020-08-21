@@ -2,8 +2,32 @@
 <div>
     <a [routerLink]="['/add-product']">Add Product</a> 
 </div>
-<div class="products-container">
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let product of products">
+            <td><img class="product-image" [src]="product.image && product.image.length > 0 ? product.image[0].path : './assets/images/loading.gif'" /></td>
+            <td>{{ product.productCode }}</td>
+            <td>{{ product.productName }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.Price }}</td>
+            <td>
+                <a [routerLink]="['/edit-product', product.id]">Edit</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<!-- <div class="products-container">
     <div *ngFor="let product of products">
         <app-product-box [product]="product"></app-product-box>
     </div>
-</div>
+</div> -->

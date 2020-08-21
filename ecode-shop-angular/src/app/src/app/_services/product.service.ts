@@ -13,17 +13,23 @@ export class ProductService{
   getProducts = () : Observable<any[]> => {
     return this.http.get(`${API_URL}/products`)
     .pipe(map(x => <[]>x), catchError(err => []))
-  }
+  };
 
-  saveProduct(formValues)  {
-    console.log("Form Values are ", formValues, " Product Name  ", formValues.ProductName);
+  getProductById = (_id): Observable<any> => {
+    return this.http.get(`${API_URL}/products/${_id}`)
+    .pipe(map(x => x), catchError(err => null))
+  };
+
+  saveProduct(_formValues)  {
+    console.log("Form Values are ", _formValues, " Product Name  ", _formValues.ProductName);
     const formData = new FormData();
-    formData.append("ProductCode", formValues.ProductCode);
-    formData.append("ProductName", formValues.ProductName);
-    formData.append("Description", formValues.Description);
-    formData.append("Price", formValues.Price);
-    formData.append("Stock", formValues.Stock);
-    formData.append("Image", formValues.Image);
+    formData.append("Id", _formValues.Id);
+    formData.append("ProductCode", _formValues.ProductCode);
+    formData.append("ProductName", _formValues.ProductName);
+    formData.append("Description", _formValues.Description);
+    formData.append("Price", _formValues.Price);
+    formData.append("Stock", _formValues.Stock);
+    formData.append("Image", _formValues.Image);
     console.log("FormData is : ", formData);
     //
     return this.http.post(`${API_URL}/products`, formData);

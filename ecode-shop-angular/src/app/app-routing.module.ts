@@ -11,8 +11,10 @@ import { Routes, RouterModule, CanActivate } from '@angular/router';
 const routes: Routes = [
   {path: '', component: DefaultComponent},
   {path: 'add-product', component: ProductComponent},
+  {path: 'edit-product/:id', component: ProductComponent},
   {path: 'products', component: ProductListComponent},
   {path: 'add-tag', component: TagComponent},
+  {path: 'edit-tag/:id', component: TagComponent},
   {path: 'tags', component: TagsListComponent},
   {path: 'images', component: ImagesListComponent},
   {path: 'sales', component: SalesListComponent},

@@ -6,11 +6,15 @@
     <thead>
         <th>Name</th>
         <th>Descriptioin</th>
+        <th></th>
     </thead>
     <tbody>
         <tr *ngFor="let tag of tags">
             <td>{{ tag.tagName }}</td>
             <td>{{ tag.tagDescription }}</td>
+            <td>
+                <a [routerLink]="['/edit-tag', tag.id]">Edit</a>
+            </td>
         </tr>
     </tbody>
 </table>

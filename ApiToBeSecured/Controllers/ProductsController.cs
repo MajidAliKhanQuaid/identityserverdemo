@@ -28,7 +28,7 @@ namespace ApiToBeSecured.Controllers
             var isSuccessResult = await _productService.GetAllProduct();
             if (isSuccessResult == null) return BadRequest();
             // this method is written to avoid api remembing the host of the api
-            IncludeHostUrl(isSuccessResult);
+            IncludeHostUrlToProductImages(isSuccessResult);
             //
             return Json(isSuccessResult);
         }
@@ -38,6 +38,7 @@ namespace ApiToBeSecured.Controllers
         {
             var isSuccessResult = await _productService.GetProductById(id);
             if (isSuccessResult == null) return BadRequest();
+            IncludeHostUrlToProductImages(isSuccessResult);
             return Json(isSuccessResult);
         }
 
@@ -45,19 +46,29 @@ namespace ApiToBeSecured.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] ProductDto model)
         {
-            var isSuccessResult = await _productService.AddProduct(model);
+            bool containsGuid = Guid.TryParse(model.Id, out var guid) && guid != Guid.Empty;
+            // empty guid means new product
+            if (!containsGuid)
+            {
+                var isSuccessResult = await _productService.AddProduct(model);
 
-            //check if returned result is guid or not
-            //if guid it was successfull. Otherwise unsuccessfull
-            Guid GuidOutput;
-            bool isGuid = Guid.TryParse(isSuccessResult, out GuidOutput);
+                //check if returned result is guid or not
+                //if guid it was successfull. Otherwise unsuccessfull
+                Guid GuidOutput;
+                bool isGuid = Guid.TryParse(isSuccessResult, out GuidOutput);
 
-            if (!isGuid)
-                return BadRequest(isSuccessResult);
+                if (!isGuid)
+                    return BadRequest(isSuccessResult);
+                else
+                {
+                    //var NewUri = Url.Link("ProductGet",new{id = new Guid(isSuccessResult)});
+                    //return Created(NewUri,model);
+                    return Ok();
+                }
+            }
             else
             {
-                //var NewUri = Url.Link("ProductGet",new{id = new Guid(isSuccessResult)});
-                //return Created(NewUri,model);
+                string result = await _productService.EditProductById(guid, model);
                 return Ok();
             }
         }
@@ -99,7 +110,22 @@ namespace ApiToBeSecured.Controllers
             }
         }
 
-        private void IncludeHostUrl(IEnumerable<Product> products)
+        private void IncludeHostUrlToProductImages(Product product)
+        {
+            Uri baseUri = new Uri(Request.Scheme + "://" + Request.Host.Value);
+            //
+            if (product.Image != null && product.Image.Count > 0)
+            {
+                foreach (var image in product.Image)
+                {
+                    Uri imageUri = new Uri(baseUri, image.Path);
+                    //
+                    image.Path = imageUri.ToString();
+                }
+            }
+        }
+
+        private void IncludeHostUrlToProductImages(IEnumerable<Product> products)
         {
             Uri baseUri = new Uri(Request.Scheme + "://" + Request.Host.Value);
             //

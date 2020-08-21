@@ -51,21 +51,23 @@ namespace ApiToBeSecured.Services
 
             _context.Products.Add(entity);
 
-            foreach (var img in product.Image)
+            foreach (var image in product.Image.Files)
             {
-                var extention = Path.GetExtension(img.FileName);
-                if (allowedExtensions.Contains(extention.ToLower()) || img.Length > 2000000)
+                var extention = Path.GetExtension(image.FileName);
+                if (allowedExtensions.Contains(extention.ToLower()) || image.Length > 2000000)
                     message = "Select jpg or jpeg or png less than 2Μ";
                 var fileName = Path.Combine("Products", DateTime.Now.Ticks + extention);
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName);
 
-                try {
+                try
+                {
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
-                        await img.CopyToAsync(stream);
+                        await image.CopyToAsync(stream);
                     }
                 }
-                catch {
+                catch
+                {
                     return "can not upload image";
                 }
 
@@ -89,7 +91,7 @@ namespace ApiToBeSecured.Services
                 _context.ProductTags.Add(tagEntity);
             }
 
-            bool success = await _context.SaveChangesAsync() == 1 + product.Image.Count + product.Tags.Count;
+            bool success = await _context.SaveChangesAsync() == 1 + product.Image.Files.Count + product.Tags.Count;
 
             if (success) return entity.Id.ToString();
             else return message;
@@ -128,10 +130,8 @@ namespace ApiToBeSecured.Services
             //if (entity.Stock - stock >= 0)
             //    entity.Stock = entity.Stock - stock;
             //else return "Unsucessfull";
-
-            bool success = await _context.SaveChangesAsync() == 1;
-            if (success) return entity.Id.ToString();
-            else return "Unsucessfull";
+            await _context.SaveChangesAsync();
+            return entity.Id.ToString();
         }
 
 

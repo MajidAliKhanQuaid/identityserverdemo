@@ -21,4 +21,8 @@ export class ProductListComponent implements OnInit {
     })
   }
 
+  editProduct(pId){
+    console.log("Product Id ", pId);
+  }
+
 }

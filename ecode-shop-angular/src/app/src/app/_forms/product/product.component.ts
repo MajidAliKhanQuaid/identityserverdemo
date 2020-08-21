@@ -1,7 +1,9 @@
 import { ProductService } from './../../_services/product.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { merge, Subscription } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 // multiple image upload
 // https://hdtuto.com/article/angular-multiple-image-upload-example-multiple-image-upload-in-angular-9
@@ -42,23 +44,51 @@ export function requiredFileType( type: string ) {
   styleUrls: ['./product.component.scss']
 })
 
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, OnDestroy {
   tempImages = []
   productForm: FormGroup;
   productImages: File[];
   errorMessage: string;
-
-  constructor(private productService : ProductService, private router: Router) { }
+  productId: string;
+  RouteSubscription: Subscription;
+  constructor(private productService : ProductService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.productForm = new FormGroup({
-      ProductCode: new FormControl('PR-', Validators.required),
+      Id: new FormControl(''),
+      ProductCode: new FormControl('CODE-', Validators.required),
       ProductName: new FormControl('', Validators.required),
       Description: new FormControl('', Validators.required),
-      Price: new FormControl('', Validators.required),
-      Stock: new FormControl('', Validators.required),
+      Price: new FormControl('', [Validators.required, Validators.pattern("^[0-9]+$")]),
+      Stock: new FormControl('', [Validators.required, Validators.pattern("^[0-9]+$")]),
       Image: new FormControl('')
     });
+
+    this.RouteSubscription = this.route.paramMap.subscribe(params => {
+      if(params.has('id')){
+        this.productId = params.get('id');
+        this.productService.getProductById(this.productId).subscribe(product => {
+          console.log("***************** ", product.id);
+          this.productForm.patchValue({
+            Id: product.id,
+            ProductCode: product.productCode,
+            ProductName: product.productName,
+            Description: product.description,
+            Price: product.price,
+            Stock: product.stock
+          });
+          console.log("Product ", product);
+          if(product.image && product.image.length > 0){
+            product.image.forEach(element => {
+              this.tempImages.push(element.path);
+              console.log(`Image for Product ${product.id} `, element.path);
+            });
+          }
+        })
+        console.log('Product Id ', this.productId);
+      }
+    });
+    //
   }
 
   submitForm(){
@@ -83,6 +113,12 @@ export class ProductComponent implements OnInit {
     }
   }
 
+  // these properties can be ignored if we use the `formControlName` instead of [formControl]
+
+  get Id(){
+    return this.productForm.controls.Id;
+  }
+
   get ProductName(){
     return this.productForm.controls.ProductName;
   }
@@ -105,18 +141,24 @@ export class ProductComponent implements OnInit {
 
   imageUploadChange(_event){
     this.productImages = <File[]>_event.target.files;
+    
     for(var i = 0; i < this.productImages.length; i++){
       var reader = new FileReader();
       reader.onload = (_rEvent) => {
-        console.log("Read to Add image", _rEvent.target.result); 
+        console.log("############## Called"); 
+        // console.log("Read to Add image", _rEvent.target.result); 
         this.tempImages.push(_rEvent.target.result); 
         console.log("Image Added", this.tempImages.length);
         this.productForm.patchValue({
           Image: this.productImages[0]
-        })
+        });
       };
       reader.readAsDataURL(this.productImages[i]); 
     }
+  }
+
+  ngOnDestroy(){
+    this.RouteSubscription.unsubscribe();
   }
 
 }
