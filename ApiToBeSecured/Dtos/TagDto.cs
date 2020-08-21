@@ -5,7 +5,7 @@ namespace ApiToBeSecured.Services
 {
     public class TagDto
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         [Required]
         [StringLength(100,ErrorMessage="The {0} must be between {2} and {1} length",MinimumLength=2)]
         public string TagName { get; set; }

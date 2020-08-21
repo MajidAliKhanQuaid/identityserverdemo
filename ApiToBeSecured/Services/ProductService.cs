@@ -120,11 +120,55 @@ namespace ApiToBeSecured.Services
 
         public async Task<string> EditProductById(Guid id, ProductDto productDto)
         {
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+            var message = "";
+
             var entity = await this.GetProductById(id);
             entity.ProductName = productDto.ProductName;
             entity.Description = productDto.Description;
             entity.ProductCode = productDto.ProductCode;
             entity.Stock = productDto.Stock;
+            if (productDto.Image?.Files?.Count > 0)
+            {
+                // first clearing existing images, then adds new images
+                if(entity.Image?.Count > 0)
+                {
+                    foreach(var existingImage in entity.Image)
+                    {
+                        entity.Image.Remove(existingImage);
+                    }
+                }
+                //
+                foreach (var image in productDto.Image.Files)
+                {
+                    var extention = Path.GetExtension(image.FileName);
+                    if (allowedExtensions.Contains(extention.ToLower()) || image.Length > 2000000)
+                        message = "Select jpg or jpeg or png less than 2Μ";
+                    var fileName = Path.Combine("Products", DateTime.Now.Ticks + extention);
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName);
+
+                    try
+                    {
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await image.CopyToAsync(stream);
+                        }
+                    }
+                    catch
+                    {
+                        return "can not upload image";
+                    }
+
+                    var imageEntity = new Image
+                    {
+                        Id = new Guid(),
+                        ProductId = entity.Id,
+                        Path = fileName
+                    };
+
+                    _context.Images.Add(imageEntity);
+                }
+            }
             //entity.Image = productDto.Image;
             //entity.Tags = productDto.Tags;
             //if (entity.Stock - stock >= 0)

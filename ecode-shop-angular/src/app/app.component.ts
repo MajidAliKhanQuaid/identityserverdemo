@@ -1,4 +1,4 @@
-import { ProductService } from './src/app/_services/product.service';
+import { ProductService } from './_services/product.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OidcClientNotification, OidcSecurityService, PublicConfiguration } from 'angular-auth-oidc-client';
 import { Observable, Subscription } from 'rxjs';

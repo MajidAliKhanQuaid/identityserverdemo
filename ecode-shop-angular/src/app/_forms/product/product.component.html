@@ -1,0 +1,94 @@
+<form [formGroup]="productForm" (ngSubmit)="submitForm()">
+  <h1>{{ productId }}</h1>
+  <input type="hidden" name="Id" [formControl]="Id" />
+
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Code</mat-label>
+      <input matInput placeholder="" [formControl]="ProductCode" required />
+      <mat-error
+        *ngIf="
+          ProductCode.touched &&
+          ProductCode.errors &&
+          ProductCode.errors.required
+        "
+        >Code is required</mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="" [formControl]="ProductName" required />
+      <mat-error
+        *ngIf="
+          ProductName.touched &&
+          ProductName.errors &&
+          ProductName.errors.required
+        "
+        >Name is required</mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <input matInput placeholder="" [formControl]="Description" required />
+      <mat-error
+        *ngIf="
+          Description.touched &&
+          Description.errors &&
+          Description.errors.required
+        "
+        >Description is required</mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Price</mat-label>
+      <input
+        matInput
+        type="number"
+        [formControl]="Price"
+        class="example-right-align"
+      />
+      <span matPrefix>$&nbsp;</span>
+      <span matSuffix>.00</span>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Stock</mat-label>
+      <input
+        matInput
+        type="number"
+        [formControl]="Stock"
+        class="example-right-align"
+      />
+    </mat-form-field>
+  </div>
+
+  <h5>Images</h5>
+  <div class="image-container">
+    <div class="image-box" *ngFor="let imageUrl of tempImages">
+      <img [src]="imageUrl" />
+    </div>
+  </div>
+
+  <input type="file" (change)="imageUploadChange($event)" multiple />
+  <div class="fg">
+    <button
+      mat-stroked-button
+      color="primary"
+      type="submit"
+      [disabled]="!productForm.valid"
+    >
+      Save/Update
+    </button>
+  </div>
+</form>

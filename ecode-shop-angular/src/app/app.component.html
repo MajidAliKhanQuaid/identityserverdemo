@@ -1,12 +1,40 @@
-<app-topbar></app-topbar>
+<!-- <mat-sidenav-container class="example-container" *ngIf="true">
+  <mat-sidenav mode="side" opened>Sidenav content</mat-sidenav>
+  <mat-sidenav-content>Main content</mat-sidenav-content>
+</mat-sidenav-container> -->
 <div>
-    <!-- <router-outlet></router-outlet> -->
-    <button (click)="login()">Log In</button>
-    <button (click)="callApi()">Call Api</button>
-    <button (click)="logout()">Log Out</button>
-    
-    <div [hidden]="!isAuthenticated">You are authenticated</div>
+  <mat-toolbar>
+    <button
+      mat-icon-button
+      class="example-icon"
+      aria-label="Example icon-button with menu icon"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>My App</span>
+    <span class="example-spacer"></span>
+    <button
+      mat-icon-button
+      class="example-icon favorite-icon"
+      aria-label="Example icon-button with heart icon"
+    >
+      Products
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      class="example-icon"
+      aria-label="Example icon-button with share icon"
+    >
+      <mat-icon>share</mat-icon>
+    </button>
+  </mat-toolbar>
 </div>
-<div class="container">
-    <router-outlet></router-outlet>
-</div>
+<mat-drawer-container class="example-container">
+  <mat-drawer mode="side" opened> </mat-drawer>
+  <mat-drawer-content>
+    <div class="container">
+      <app-topbar></app-topbar>
+      <router-outlet></router-outlet></div
+  ></mat-drawer-content>
+</mat-drawer-container>

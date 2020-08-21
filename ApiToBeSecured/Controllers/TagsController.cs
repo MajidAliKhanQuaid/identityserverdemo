@@ -37,8 +37,9 @@ namespace ApiToBeSecured.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]TagDto model)
         {
+            bool containsId = Guid.TryParse(model.Id, out var guid) && guid != Guid.Empty;
             // if there's no id, then add new
-            if(model.Id == Guid.Empty)
+            if (!containsId)
             {
                 var isSuccessResult = await _tagService.AddTag(model);
 
@@ -52,7 +53,7 @@ namespace ApiToBeSecured.Controllers
             }
             else
             {
-                var isSuccessResult = await _tagService.EditTagById(model.Id, model);
+                var isSuccessResult = await _tagService.EditTagById(guid, model);
 
                 if (isSuccessResult == "Unsucessfull")
                     return BadRequest();
