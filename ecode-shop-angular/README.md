@@ -1,5 +1,5 @@
 # EcodeShopAngular
 
 ## Command
-ng serve --port 1234
-ng build --build
+- ng serve --port 1234
+- ng build --build
